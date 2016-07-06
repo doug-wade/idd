@@ -1,2 +1,2 @@
-import idd from 'idd';
-export default idd();
+import idd from '../../../../..';
+export default idd(__dirname);
