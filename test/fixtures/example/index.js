@@ -1,2 +1,2 @@
-import {greeter} from './lib';
-greeter.greet();
+import lib from './lib';
+lib.greet();

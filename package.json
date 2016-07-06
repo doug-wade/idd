@@ -47,8 +47,6 @@
     ]
   },
   "xo": {
-    "files": [
-      "src/*.js"
-    ]
+    "ignores": "index.js"
   }
 }

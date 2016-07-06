@@ -1,25 +1,23 @@
 import fs from 'fs';
 import path from 'path';
 
-export default async function(dirname) {
-	const members = await readdir(dirname);
+export default function (dirname) {
+	const members = readdir(dirname);
 	const destruct = {};
-	members.forEach((member) => {
-		console.log('requiring ' + member);
-		destruct[member] = require(path.join(dirname, member));
+	members.forEach(member => {
+		const key = path.basename(member, path.extname(member));
+		destruct[key] = require(path.join(dirname, member)).default;
 	});
 	return destruct;
-};
+}
 
 function readdir(dir) {
-	return new Promise(function (resolve, reject) {
-		fs.readdir(dir, (error, contents) => {
-			if (error) {
-				console.error(error);
-				reject(error);
-			} else {
-				resolve(contents);
-			}
-		});
-	});
+	let contents;
+	try {
+		contents = fs.readdirSync(dir);
+	} catch (err) {
+		console.error(err);
+		throw err;
+	}
+	return contents;
 }
