@@ -1,4 +1,4 @@
-# idd
+# idd ![idd](https://travis-ci.org/doug-wade/idd.svg)
 
 A dependency injection system with destructuring.  Combines a common pattern
 of using a single destructuring argument to avoid confusing the order of
