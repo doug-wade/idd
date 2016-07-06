@@ -2,7 +2,7 @@
 
 A dependency injection system with destructuring.  Combines a common pattern
 of using a single destructuring argument to avoid confusing the order of
-arguments to high-parity functions, possibly with many parameters.
+arguments to high-parity functions, possibly with many optional parameters.
 
 
 ## Getting Started
