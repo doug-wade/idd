@@ -27,7 +27,7 @@ lib/greeter.js
 
 index.js
 
-	import {greeter} from 'lib';
+	import {greeter} from './lib';
 	greeter.greet();
 	// Output:
 	// Hello world!
@@ -82,7 +82,7 @@ lib/greeter.js
 
 index.js
 
-	import {greeter} from 'lib';
+	import {greeter} from './lib';
 	greeter.greet();
 	// Output:
 	// Hello World!

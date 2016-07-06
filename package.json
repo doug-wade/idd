@@ -4,7 +4,8 @@
   "description": "Injection of Dependencies through Destructuring",
   "main": "index.js",
   "scripts": {
-    "test": "ava && xo"
+    "clean": "del test/fixtures/**/build npm-debug.log*",
+    "test": "npm run clean && ava && xo"
   },
   "repository": {
     "type": "git",
@@ -29,6 +30,7 @@
   "devDependencies": {
     "ava": "^0.15.2",
     "babel-register": "^6.9.0",
+    "del-cli": "^0.2.0",
     "xo": "^0.16.0"
   },
   "ava": {

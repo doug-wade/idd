@@ -12,9 +12,14 @@ test('runs the more complicated example', async t => {
 	t.is(results, 'Привет, мир!');
 });
 
-function runFixture(fixture) {
+async function runFixture(fixture) {
+	await exec('babel --presets=es2015 --out-dir build/ lib/*.js index.js', {cwd: path.join('fixtures', fixture)});
+	return await exec('node ' + path.join('fixtures', 'example', 'build', 'index.js'));
+}
+
+function exec(cmd, opts) {
 	return new Promise((resolve, reject) => {
-		cp.exec('node ' + path.join('fixtures', fixture, 'index.js'), (error, stdout, stderr) => {
+		cp.exec(cmd, opts, (error, stdout, stderr) => {
 			if (error) {
 				console.error(stderr);
 				reject(error);

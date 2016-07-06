@@ -1,4 +1,2 @@
-import {greeter} from 'lib';
+import {greeter} from './lib';
 greeter.greet();
-// Output:
-// Привет, мир!
