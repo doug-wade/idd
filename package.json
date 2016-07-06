@@ -1,0 +1,29 @@
+{
+  "name": "idd",
+  "version": "0.0.0",
+  "description": "Injection of Dependencies through Destructuring",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doug-wade/idd.git"
+  },
+  "keywords": [
+    "dependency",
+    "injection",
+    "di",
+    "destructuring",
+    "idd"
+  ],
+  "author": "Doug Wade <doug@dougwade.io>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/doug-wade/idd/issues"
+  },
+  "homepage": "https://github.com/doug-wade/idd#readme",
+  "dependencies": {
+    "babylon": "^6.8.3"
+  }
+}
