@@ -21,11 +21,11 @@ on the directory's default export
 
 lib/greeter.js
 
-	export () => {
+	export default () => {
 		console.log('Hello World');
-	}
+	};
 
-src/index.js
+index.js
 
 	import {greeter} from 'lib';
 	greeter.greet();
@@ -49,15 +49,15 @@ lib/logger.js
 
 	import chalk from 'chalk';
 	export default class logger {
-		constructor () {
+		constructor() {
 			this.level = process.env.LEVEL;
 		}
-		log (msg) {
+		log(msg) {
 			if (this.level !== 'quiet') {
 				console.log(msg);
 			}
-		},
-		error () {
+		}
+		error(msg) {
 			if (this.level !== 'quiet' && this.level !== 'silent') {
 				chalk.red(msg);
 			}
@@ -66,19 +66,21 @@ lib/logger.js
 
 lib/greeter.js
 
-	export default ({ config, logger }) => {
-		greet: () => {
-			if (config.language === 'en-us') {
-				logger.log('Hello World!');
-			} else if (config.language === 'ru-ru') {
-				logger.log('Привет, мир!');
-			} else {
-				logger.error('unsupported language ' + config.language);
+	export default ({config, logger}) => {
+		return {
+			greet: () => {
+				if (config.language === 'en-us') {
+					logger.log('Hello World!');
+				} else if (config.language === 'ru-ru') {
+					logger.log('Привет, мир!');
+				} else {
+					logger.error('unsupported language ' + config.language);
+				}
 			}
-		}
-	}
+		};
+	};
 
-src/index.js
+index.js
 
 	import {greeter} from 'lib';
 	greeter.greet();

@@ -4,7 +4,7 @@
   "description": "Injection of Dependencies through Destructuring",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "ava && xo"
   },
   "repository": {
     "type": "git",
@@ -25,5 +25,15 @@
   "homepage": "https://github.com/doug-wade/idd#readme",
   "dependencies": {
     "babylon": "^6.8.3"
-  }
+  },
+  "devDependencies": {
+    "ava": "^0.15.2",
+    "xo": "^0.16.0"
+  },
+  "ava": {
+    "files": ["test/*.spec.js"]
+  },
+  "xo": {
+    "files": ["src/*.js"]
+	}
 }
