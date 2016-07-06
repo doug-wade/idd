@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/doug-wade/idd#readme",
   "dependencies": {
-    "babylon": "^6.8.3"
+    "babylon": "^6.8.4"
   },
   "devDependencies": {
     "ava": "^0.15.2",
