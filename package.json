@@ -28,12 +28,20 @@
   },
   "devDependencies": {
     "ava": "^0.15.2",
+    "babel-register": "^6.9.0",
     "xo": "^0.16.0"
   },
   "ava": {
-    "files": ["test/*.spec.js"]
+    "files": [
+      "test/*.spec.js"
+    ],
+    "require": [
+      "babel-register"
+    ]
   },
   "xo": {
-    "files": ["src/*.js"]
-	}
+    "files": [
+      "src/*.js"
+    ]
+  }
 }
