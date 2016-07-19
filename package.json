@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "clean": "del test/fixtures/**/build npm-debug.log* index.js",
+    "dev": "ava -w",
     "prepublish": "babel index.babel.js -o index.js",
     "test": "npm run clean && npm run prepublish && ava && xo"
   },
