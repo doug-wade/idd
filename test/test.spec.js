@@ -4,7 +4,12 @@ import test from 'ava';
 
 test('runs the example', async t => {
 	const results = await runFixture('example');
-	t.is(results.trim(), 'Hello World!');
+	t.is(results.trim(), 'Hello World!\nHello World!');
+});
+
+test('runs the mocks', async t => {
+	const results = await runFixture('mocks');
+	t.is(results.trim(), 'Привет, мир!\nПривет, мир!');
 });
 
 // test('runs the more complicated example', async t => {
