@@ -11,32 +11,8 @@ To install the dependency injection system, use `npm install`
 
     npm i -S idd
 
-To provide a lib directory that has its interdependencies injected, add an
-index.js with an import, invocation, and export
-
-    cat "import idd from 'idd'; export default idd();" > lib/index.js
-
 Then, from other peer directories, you can require the files as properties
 on the directory's default export
-
-lib/greeter.js
-
-	export default () => {
-		console.log('Hello World');
-	};
-
-index.js
-
-	import {greeter} from './lib';
-	greeter.greet();
-	// Output:
-	// Hello world!
-
-
-## Usage
-
-Of course, dependency injection isn't very interesting without dependencies,
-so let's add a couple of dependencies
 
 lib/config.js
 
@@ -49,12 +25,12 @@ lib/logger.js
 
 	import chalk from 'chalk';
 	export default class logger {
-		constructor() {
-			this.level = process.env.LEVEL;
+		constructor({config}) {
+			this.level = config.level;
 		}
 		log(msg) {
 			if (this.level !== 'quiet') {
-				console.log(msg);
+				chalk.green(msg);
 			}
 		}
 		error(msg) {
@@ -64,25 +40,96 @@ lib/logger.js
 		}
 	}
 
-lib/greeter.js
+lib/i18n.js
 
-	export default ({config, logger}) => {
-		return {
-			greet: () => {
-				if (config.language === 'en-us') {
-					logger.log('Hello World!');
-				} else if (config.language === 'ru-ru') {
-					logger.log('Привет, мир!');
-				} else {
-					logger.error('unsupported language ' + config.language);
-				}
-			}
+	export default ({config}) => {
+		return (args) => {
+			'en-us': ['Hello World!', 'implement me'],
+			'ru-ru': ['Привет, мир!', 'реализовуюй меня']
+			}[config.language](args);
 		};
 	};
 
 index.js
 
-	import {greeter} from './lib';
-	greeter.greet();
-	// Output:
-	// Hello World!
+```javascript
+import idd from 'idd';
+
+cosnt {greeter, logger} = idd('./lib');
+
+logger.log(i18n(0));
+try {
+	throw new Error(1);
+} catch (e) {
+	logger.error(e);
+	throw e;
+}
+
+// Output:
+// Hello World!
+// implement me
+```
+
+Of course, if you were to change config to be instead 	
+
+```javascript
+export default {
+	language: 'ru-ru',
+	level: 'error'
+}
+```
+
+Then the ouput would be 'реализовуюй меня'.
+
+
+## Testing
+
+A good dependency injection system should make unit testing easy.  To mock out
+your dependencies, just provide an optional third option with the mocks
+
+```javascript
+import {sinon} from 'sinon';
+import idd from 'idd';
+
+import {greeter} from idd('./lib', { config: { greeting: 'Hello World!'}});
+greeter.greet();
+```
+
+
+## React Server
+
+This makes structuring React Server projects small and easy to read
+
+```javascript
+import '../build/styles/index.css';
+import React from 'react';
+import {RootElement} from 'react-server';
+import idd from 'idd';
+
+const {actions, config, stores, components} = idd('..');
+const {Header, TodoList, Footer} = components;
+
+export default class IndexPage {
+	handleRoute(next) {
+		if (!config.SERVER_SIDE) {
+			actions.pageView('index');
+		}
+		return next();
+	}
+
+	getTitle() {
+		return 'React Server Todo';
+	}
+
+	getElements() {
+		return [
+			<RootElement key={0}>
+				<Header/>
+			</RootElement>,
+			<RootElement when={stores.todoStore} key={1}>
+				<TodoList/>
+			</RootElement>
+		];
+	}
+}
+```
