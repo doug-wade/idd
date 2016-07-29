@@ -1,4 +1,4 @@
-# idd ![idd travis build status](https://travis-ci.org/doug-wade/idd.svg) ![idd appveyor build status](https://ci.appveyor.com/api/projects/status/github/doug-wade/idd?branch=master&svg=true)
+# idd ![idd travis build status](https://travis-ci.org/doug-wade/idd.svg) ![idd appveyor build status](https://ci.appveyor.com/api/projects/status/github/doug-wade/idd?branch=master&svg=true) ![idd code coverage status](http://codecov.io/github/doug-wade/idd?branch=master)
 
 A dependency injection system with destructuring.  Combines a common pattern
 of using a single destructuring argument to avoid confusing the order of
@@ -9,7 +9,7 @@ arguments to high-parity functions, possibly with many optional parameters.
 
 To install the dependency injection system, use `npm install`
 
-    npm i -S idd
+	npm i -S idd
 
 Then, from other peer directories, you can require the files as properties
 on the directory's default export
