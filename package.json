@@ -6,7 +6,7 @@
   "scripts": {
     "clean": "del test/fixtures/**/build npm-debug.log* index.js",
     "compile": "babel index.babel.js -o index.js",
-    "prepublish": "npm run test && npm run compile",
+    "prepublish": "npm run compile && npm run test",
     "test": "ava && xo",
     "watch": "chokidar '**/.js' 'npm run compile && npm test'"
   },
