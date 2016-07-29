@@ -2,3 +2,5 @@ test/fixtures/more-complicated-example/build
 test/fixtures/**/build
 node_modules/
 /index.js
+.nyc_output
+coverage
