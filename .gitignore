@@ -1,6 +1,6 @@
 test/fixtures/more-complicated-example/build
 test/fixtures/**/build
 node_modules/
-/index.js
+/dist
 .nyc_output
 coverage

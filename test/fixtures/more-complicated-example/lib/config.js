@@ -1,4 +1,6 @@
-export default {
-	language: 'ru-ru',
-	level: 'info'
+export default function () {
+	return {
+		language: 'ru-ru',
+		level: 'info'
+	};
 };

@@ -1,3 +1,5 @@
-export default {
-	greeting: 'Hello World!'
-};
+export default function () {
+	return {
+		greeting: 'Hello World!'
+	};
+}

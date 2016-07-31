@@ -9,46 +9,54 @@ arguments to high-parity functions, possibly with many optional parameters.
 
 To install the dependency injection system, use `npm install`
 
-	npm i -S idd
+```shell
+npm i -S idd
+```
 
 Then, from other peer directories, you can require the files as properties
 on the directory's default export
 
 lib/config.js
 
-	export default {
-		language: 'en-us',
-		level: 'info'
-	}
+```javascript
+export default {
+	language: 'en-us',
+	level: 'info'
+}
+```
 
 lib/logger.js
 
-	import chalk from 'chalk';
-	export default class logger {
-		constructor({config}) {
-			this.level = config.level;
-		}
-		log(msg) {
-			if (this.level !== 'quiet') {
-				chalk.green(msg);
-			}
-		}
-		error(msg) {
-			if (this.level !== 'quiet' && this.level !== 'silent') {
-				chalk.red(msg);
-			}
+```javascript
+import chalk from 'chalk';
+export default class logger {
+	constructor({config}) {
+		this.level = config.level;
+	}
+	log(msg) {
+		if (this.level !== 'quiet') {
+			chalk.green(msg);
 		}
 	}
+	error(msg) {
+		if (this.level !== 'quiet' && this.level !== 'silent') {
+			chalk.red(msg);
+		}
+	}
+}
+```
 
 lib/i18n.js
 
-	export default ({config}) => {
-		return (args) => {
-			'en-us': ['Hello World!', 'implement me'],
-			'ru-ru': ['Привет, мир!', 'реализовуюй меня']
-			}[config.language](args);
-		};
+```javascript
+export default ({config}) => {
+	return (args) => {
+		'en-us': ['Hello World!', 'implement me'],
+		'ru-ru': ['Привет, мир!', 'реализовуюй меня']
+		}[config.language](args);
 	};
+};
+```
 
 index.js
 
@@ -90,46 +98,25 @@ your dependencies, just provide an optional third option with the mocks
 ```javascript
 import {sinon} from 'sinon';
 import idd from 'idd';
+import test from 'ava';
 
-import {greeter} from idd('./lib', { config: { greeting: 'Hello World!'}});
-greeter.greet();
+test('Greet was called', t => {
+	const greet = sinon.spy();
+	const config = { greeting: 'Hello World!'};
+	const {greeter} = idd('./lib', { config, greet });
+
+	greeter.greet();
+
+	t.true(greet.calledOnce);
+});
 ```
 
 
-## React Server
+## Roadmap
 
-This makes structuring React Server projects small and easy to read
+Idd is under active development.  Some planned features:
 
-```javascript
-import '../build/styles/index.css';
-import React from 'react';
-import {RootElement} from 'react-server';
-import idd from 'idd';
-
-const {actions, config, stores, components} = idd('..');
-const {Header, TodoList, Footer} = components;
-
-export default class IndexPage {
-	handleRoute(next) {
-		if (!config.SERVER_SIDE) {
-			actions.pageView('index');
-		}
-		return next();
-	}
-
-	getTitle() {
-		return 'React Server Todo';
-	}
-
-	getElements() {
-		return [
-			<RootElement key={0}>
-				<Header/>
-			</RootElement>,
-			<RootElement when={stores.todoStore} key={1}>
-				<TodoList/>
-			</RootElement>
-		];
-	}
-}
-```
+- Make the more-complicated-example test case work
+- Write a test case for requiring deeply nested dependency trees from the top level
+- Write a test case for the React Server example
+- Detect cycles in the graph and warn if the user adds a strict mode option

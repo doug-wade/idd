@@ -1,3 +1,5 @@
-export default {greet: () => {
-	console.log('Hello World!');
-}};
+export default () => {
+	return {
+		greet: () => console.log('Hello World!')
+	};
+};
