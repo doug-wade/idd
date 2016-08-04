@@ -19,23 +19,45 @@ on the directory's default export
 lib/config.js
 
 ```javascript
-export default {
-	language: 'en-us',
-	level: 'info'
-}
+export default function () {
+	return {
+		language: 'ru-ru',
+		level: 'info'
+	};
+};
 ```
 
-lib/logger.js
+lib/greeter.js
+
+```javascript
+export default ({config, Logger}) => {
+	const logger = new Logger();
+	return {
+		greet: () => {
+			if (config.language === 'en-us') {
+				logger.log('Hello World!');
+			} else if (config.language === 'ru-ru') {
+				logger.log('Привет, мир!');
+			} else {
+				logger.error('unsupported language ' + config.language);
+			}
+		}
+	};
+};
+```
+
+lib/Logger.js
 
 ```javascript
 import chalk from 'chalk';
-export default class logger {
-	constructor({config}) {
-		this.level = config.level;
+
+export default () => class Logger {
+	constructor() {
+		this.level = process.env.LEVEL;
 	}
 	log(msg) {
 		if (this.level !== 'quiet') {
-			chalk.green(msg);
+			console.log(msg);
 		}
 	}
 	error(msg) {
@@ -43,51 +65,31 @@ export default class logger {
 			chalk.red(msg);
 		}
 	}
-}
-```
-
-lib/i18n.js
-
-```javascript
-export default ({config}) => {
-	return (args) => {
-		'en-us': ['Hello World!', 'implement me'],
-		'ru-ru': ['Привет, мир!', 'реализовуюй меня']
-		}[config.language](args);
-	};
 };
 ```
 
 index.js
 
 ```javascript
-import idd from 'idd';
+import path from 'path';
+import idd from '../../../..';
 
-cosnt {greeter, logger} = idd('./lib');
+const {greeter} = idd(path.join(__dirname, 'lib'));
 
-logger.log(i18n(0));
-try {
-	throw new Error(1);
-} catch (e) {
-	logger.error(e);
-	throw e;
-}
-
-// Output:
-// Hello World!
-// implement me
+greeter.greet();
 ```
 
-Of course, if you were to change config to be instead 	
+Then the output would be 'Hello World!'.  If you were to change config to be
+instead 	
 
 ```javascript
-export default {
+export default function() {
 	language: 'ru-ru',
 	level: 'error'
 }
 ```
 
-Then the ouput would be 'реализовуюй меня'.
+Then the output would be 'Привет, мир!'.
 
 
 ## Testing
@@ -116,7 +118,6 @@ test('Greet was called', t => {
 
 Idd is under active development.  Some planned features:
 
-- Make the more-complicated-example test case work
 - Write a test case for requiring deeply nested dependency trees from the top level
 - Write a test case for the React Server example
 - Detect cycles in the graph and warn if the user adds a strict mode option
