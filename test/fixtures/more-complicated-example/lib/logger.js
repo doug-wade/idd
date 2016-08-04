@@ -1,5 +1,6 @@
 import chalk from 'chalk';
-export default class logger {
+
+export default () => class Logger {
 	constructor() {
 		this.level = process.env.LEVEL;
 	}
@@ -13,4 +14,4 @@ export default class logger {
 			chalk.red(msg);
 		}
 	}
-}
+};

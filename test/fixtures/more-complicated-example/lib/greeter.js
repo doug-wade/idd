@@ -1,4 +1,5 @@
-export default ({config, logger}) => {
+export default ({config, Logger}) => {
+	const logger = new Logger();
 	return {
 		greet: () => {
 			if (config.language === 'en-us') {

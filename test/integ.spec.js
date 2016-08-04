@@ -12,8 +12,18 @@ test('runs the mocks', async t => {
 	t.is(results.trim(), 'Привет, мир!\nПривет, мир!');
 });
 
-// test('runs the more complicated example', async t => {
-// 	const results = await runFixture('more-complicated-example');
+test('runs functions', async t => {
+	const results = await runFixture('functions');
+	t.is(results.trim(), 'hello from b!\nhello from a!');
+});
+
+test('runs the more complicated example', async t => {
+	const results = await runFixture('more-complicated-example');
+	t.is(results.trim(), 'Привет, мир!');
+});
+
+// test('runs the React Server example', async t => {
+// 	const results = await runFixture('react-server');
 // 	t.is(results.trim(), 'Привет, мир!');
 // });
 
