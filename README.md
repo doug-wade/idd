@@ -1,4 +1,4 @@
-# idd ![idd travis build status](https://travis-ci.org/doug-wade/idd.svg) ![idd appveyor build status](https://ci.appveyor.com/api/projects/status/github/doug-wade/idd?branch=master&svg=true) ![idd code coverage status](http://codecov.io/github/doug-wade/idd?branch=master)
+# idd ![idd travis build status](https://travis-ci.org/doug-wade/idd.svg) ![idd appveyor build status](https://ci.appveyor.com/api/projects/status/github/doug-wade/idd?branch=master&svg=true)
 
 A dependency injection system with destructuring.  Combines a common pattern
 of using a single destructuring argument to avoid confusing the order of
