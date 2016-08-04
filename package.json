@@ -1,13 +1,13 @@
 {
   "name": "idd",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Injection of Dependencies through Destructuring",
   "main": "dist/index.js",
   "scripts": {
     "clean": "del test/fixtures/**/build npm-debug.log* dist/",
     "compile": "babel src -d dist",
     "prepublish": "npm run compile && npm run test",
-    "test": "nyc ava && xo *.babel.js",
+    "test": "nyc ava && xo *.babel.js && nyc check-coverage --lines 80 --functions 90 --branches 80",
     "watch": "chokidar '*.babel.js' 'npm run compile && npm test'",
     "coverage": "nyc report --reporter lcov | codecov"
   },
