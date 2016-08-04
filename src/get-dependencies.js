@@ -5,6 +5,7 @@ const t = require('babel-types');
 export default fileContents => {
 	const ast = babylon.parse(fileContents, {sourceType: 'module'});
 	const deps = new Set();
+	let arg;
 
 	traverse(ast, {
 		enter(path) {
@@ -14,10 +15,20 @@ export default fileContents => {
 				});
 			} else if (t.isVariableDeclaration(path.node)) {
 				path.node.declarations.forEach(n => {
-					if (!n.id.name.startsWith('_')) {
+					if (n.init && n.init.object && n.init.object.name && n.init.object.name === arg) {
 						deps.add(n.id.name);
 					}
 				});
+			} else if (t.isAssignmentExpression(path.node) && path.node.left.object && path.node.left.property.name === 'exports') {
+				console.log(path.node.right);
+				if (path.node.right && path.node.right.params && path.node.right.params[0]) {
+					arg = path.node.right.params[0];
+					console.log(arg);
+				}
+			} else if (t.isAssignmentExpression(path.node) && path.node.left.object.name === 'exports' && path.node.left.property.name === 'default') {
+				if (path.node.right && path.node.right.params && path.node.right.params[0]) {
+					arg = path.node.right.params[0].name;
+				}
 			}
 		}
 	});

@@ -1,13 +1,13 @@
 export default ({config, Logger}) => {
-	const logger = new Logger();
+	const l = new Logger();
 	return {
 		greet: () => {
 			if (config.language === 'en-us') {
-				logger.log('Hello World!');
+				l.log('Hello World!');
 			} else if (config.language === 'ru-ru') {
-				logger.log('Привет, мир!');
+				l.log('Привет, мир!');
 			} else {
-				logger.error('unsupported language ' + config.language);
+				l.error('unsupported language ' + config.language);
 			}
 		}
 	};

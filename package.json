@@ -7,7 +7,7 @@
     "clean": "del test/fixtures/**/build npm-debug.log* dist/",
     "compile": "babel src -d dist",
     "prepublish": "npm run compile && npm run test",
-    "test": "nyc ava && xo *.babel.js && nyc check-coverage --lines 80 --functions 90 --branches 80",
+    "test": "nyc ava && xo *.babel.js && nyc check-coverage --lines 80 --functions 90 --branches 79",
     "watch": "chokidar '*.babel.js' 'npm run compile && npm test'",
     "coverage": "nyc report --reporter lcov | codecov"
   },
