@@ -10,7 +10,7 @@ arguments to high-parity functions, possibly with many optional parameters.
 To install the dependency injection system, use `npm install`
 
 ```shell
-npm i -S idd
+npm install --save idd
 ```
 
 Then, from other peer directories, you can require the files as properties
