@@ -113,11 +113,3 @@ test('Greet was called', t => {
 });
 ```
 
-
-## Roadmap
-
-Idd is under active development.  Some planned features:
-
-- Write a test case for requiring deeply nested dependency trees from the top level
-- Write a test case for the React Server example
-- Detect cycles in the graph and warn if the user adds a strict mode option
