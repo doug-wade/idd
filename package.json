@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/doug-wade/idd#readme",
   "dependencies": {
-    "babel-traverse": "^6.13.0",
+    "babel-traverse": "^6.14.0",
     "babel-types": "^6.13.0",
     "babylon": "^6.8.4",
     "chalk": "^1.1.3"
