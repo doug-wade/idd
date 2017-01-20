@@ -2,30 +2,35 @@ import path from 'path';
 import cp from 'child_process';
 import test from 'ava';
 
-test('runs the example', async t => {
-	const results = await runFixture('example');
-	t.is(results.trim(), 'Hello World!\nHello World!');
+test('runs async-functions', async t => {
+	const results = await runFixture('async-functions');
+	t.is(results.trim(), 'Salamu Dunia!')
 });
 
-test('runs the mocks', async t => {
-	const results = await runFixture('mocks');
-	t.is(results.trim(), 'Привет, мир!\nПривет, мир!');
+test('runs classess', async t => {
+	const results = await runFixture('async-functions');
+	t.is(results.trim(), 'Salamu Dunia!')
+});
+
+test('runs example', async t => {
+	const results = await runFixture('example');
+	t.is(results.trim(), 'Hello World!');
 });
 
 test('runs functions', async t => {
 	const results = await runFixture('functions');
-	t.is(results.trim(), 'hello from b!\nhello from a!');
+	t.is(results.trim(), 'Bonjour le monde');
 });
 
-test('runs the more complicated example', async t => {
-	const results = await runFixture('more-complicated-example');
-	t.is(results.trim(), 'Привет, мир!');
+test('runs mocks', async t => {
+	const results = await runFixture('mocks');
+	t.is(results.trim(), 'Привет мир!');
 });
 
-// test('runs the React Server example', async t => {
-// 	const results = await runFixture('react-server');
-// 	t.is(results.trim(), 'Привет, мир!');
-// });
+test('runs the objects example', async t => {
+	const results = await runFixture('objects');
+	t.is(results.trim(), 'こんにちは世界');
+});
 
 async function runFixture(fixture) {
 	await exec('babel --presets=es2015 --out-dir build/ lib/*.js index.js', {cwd: path.join('fixtures', fixture)});

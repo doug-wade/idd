@@ -1,8 +1,8 @@
 import chalk from 'chalk';
 
-export default () => class Logger {
-	constructor() {
-		this.level = process.env.LEVEL;
+export default class Logger {
+	constructor({config}) {
+		this.level = config.level;
 	}
 	log(msg) {
 		if (this.level !== 'quiet') {
@@ -11,7 +11,7 @@ export default () => class Logger {
 	}
 	error(msg) {
 		if (this.level !== 'quiet' && this.level !== 'silent') {
-			chalk.red(msg);
+			console.log(chalk.red(msg));
 		}
 	}
 };

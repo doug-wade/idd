@@ -3,4 +3,4 @@ import idd from '../../../..';
 
 const {a} = idd(path.join(__dirname, 'lib'));
 
-console.log(a());
+a();

@@ -19,41 +19,39 @@ on the directory's default export
 lib/config.js
 
 ```javascript
-export default function () {
-	return {
-		language: 'ru-ru',
-		level: 'info'
-	};
+export default {
+	language: 'ru-ru',
+	level: 'info'
 };
 ```
 
-lib/greeter.js
+lib/greet.js
 
 ```javascript
 export default ({config, Logger}) => {
 	const logger = new Logger();
-	return {
-		greet: () => {
-			if (config.language === 'en-us') {
-				logger.log('Hello World!');
-			} else if (config.language === 'ru-ru') {
-				logger.log('Привет, мир!');
-			} else {
-				logger.error('unsupported language ' + config.language);
-			}
-		}
-	};
+	switch (config.language) {
+		case 'en-us':
+			logger.log('Hello World!');
+			break;
+		case 'ru-ru':
+			logger.log('Привет, мир!');
+			break;
+		default:
+			logger.error('unsupported language ' + config.language);
+			break;
+	}
 };
 ```
 
-lib/Logger.js
+lib/logger.js
 
 ```javascript
 import chalk from 'chalk';
 
-export default () => class Logger {
-	constructor() {
-		this.level = process.env.LEVEL;
+export default class Logger {
+	constructor({config}) {
+		this.level = config.level;
 	}
 	log(msg) {
 		if (this.level !== 'quiet') {
@@ -62,7 +60,7 @@ export default () => class Logger {
 	}
 	error(msg) {
 		if (this.level !== 'quiet' && this.level !== 'silent') {
-			chalk.red(msg);
+			console.log(chalk.red(msg));
 		}
 	}
 };
@@ -74,9 +72,9 @@ index.js
 import path from 'path';
 import idd from '../../../..';
 
-const {greeter} = idd(path.join(__dirname, 'lib'));
+const {greet} = idd(path.join(__dirname, 'lib'));
 
-greeter.greet();
+greet();
 ```
 
 Then the output would be 'Hello World!'.  If you were to change config to be
@@ -89,7 +87,7 @@ export default function() {
 }
 ```
 
-Then the output would be 'Привет, мир!'.
+There would be no output.
 
 
 ## Testing
@@ -103,13 +101,12 @@ import idd from 'idd';
 import test from 'ava';
 
 test('Greet was called', t => {
-	const greet = sinon.spy();
-	const config = { greeting: 'Hello World!'};
-	const {greeter} = idd('./lib', { config, greet });
+	const logger = { log: sinon.spy() };
+	const config = { language: 'ru-ru', level: 'info' };
+	const {greet} = idd(path.join(__dirname, 'lib'), { config, greet });
 
 	greeter.greet();
 
 	t.true(greet.calledOnce);
 });
 ```
-

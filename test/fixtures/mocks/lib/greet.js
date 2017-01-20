@@ -1,1 +1,3 @@
-export default ({config}) => () => console.log(config.greeting);
+export default ({config}) => {
+  console.log(config.greeting);
+}

@@ -1,8 +1,9 @@
 import fs from 'fs';
 import path from 'path';
 import getDeps from './get-dependencies';
+import TYPES from './types';
 
-export default function (opts) {
+export default function idd (opts) {
 	let dirname;
 	let mocks;
 	if (typeof opts === 'string') {
@@ -16,7 +17,6 @@ export default function (opts) {
 	const destruct = {};
 	const visited = new Set();
 
-	// TODO: side-effects aren't very functional...
 	members.forEach(member => loadDep({destruct, dirname, member, mocks, visited}));
 
 	return destruct;
@@ -44,24 +44,39 @@ function loadDep({destruct, dirname, member, mocks, visited}) {
 		process.mocks[key] = mocks[key];
 		destruct[key] = mocks[key];
 	} else {
-		// doug.wade 2016/07/18 I'm not sure how I would use import, since it has
-		// to be top level.  As much as I don't like using common js requires, I
-		// assume that node.js will provide an api for the import cache the same
-		// as there is an api for the require cache.
 		const contents = readfile(path.join(dirname, member));
-		let deps = getDeps(contents);
+		let {deps, type} = getDeps(contents);
 		for (let dep of deps.keys()) {
 			if (!visited.has(dep)) {
 				loadDep({destruct, dirname, member: dep + '.js', mocks, visited});
 			}
 		}
 		const modulePath = path.join(dirname, member);
-		// We pass a halfway constructed version of each module to itself in its
-		// constructor.  We could take __filename as a parameter and remove it
-		// explicitly, but better would be to detect the cycle and throw an error,
-		// if configured by the user.
-		const module = require(modulePath);
-		destruct[key] = module.default(destruct);
+		let mod = require(modulePath);
+		if (mod.default) {
+			mod = mod.default;
+		}
+		switch (type) {
+			case TYPES.object:
+				destruct[key] = mod;
+				break;
+			case TYPES.function:
+				destruct[key] = (...args) => { return mod(destruct, ...args); }
+				break;
+			case TYPES.class:
+				destruct[key] = class IddWrapperClass extends mod {
+					constructor(...args) {
+						super(destruct, ...args);
+					}
+				}
+			case TYPES.asyncFunction:
+				destruct[key] = async (...args) => {
+					await mod(destruct, ...args);
+				}
+			default:
+				console.error('Unexpected export type ' + type);
+				break;
+		}
 	}
 
 	visited.add(key);

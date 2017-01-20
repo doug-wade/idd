@@ -1,1 +1,1 @@
-export default () => () => console.log('hello from b!');
+export default () => 'Bonjour le monde';
