@@ -1,1 +1,3 @@
-export default () => 'Bonjour le monde';
+export default function () {
+  return 'Bonjour le monde';
+}

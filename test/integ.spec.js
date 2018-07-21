@@ -2,14 +2,19 @@ import path from 'path';
 import cp from 'child_process';
 import test from 'ava';
 
+test('runs arrow-functions', async t => {
+	const results = await runFixture('functions');
+	t.is(results.trim(), 'Hallo Wereld');
+});
+
 test('runs async-functions', async t => {
 	const results = await runFixture('async-functions');
 	t.is(results.trim(), 'Salamu Dunia!')
 });
 
-test('runs classess', async t => {
+test('runs classes', async t => {
 	const results = await runFixture('async-functions');
-	t.is(results.trim(), 'Salamu Dunia!')
+	t.is(results.trim(), 'سلام نړی')
 });
 
 test('runs example', async t => {

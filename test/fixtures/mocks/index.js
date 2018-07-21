@@ -6,4 +6,3 @@ const {greet, config} = idd(path.join(__dirname, 'lib'), {
 });
 
 greet();
-console.log(config.greeting);

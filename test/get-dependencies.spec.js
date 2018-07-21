@@ -38,31 +38,34 @@ EXPORT_TYPES.forEach(exportType => {
 		const title = `${exportType} ${template.templ}`;
 		test(title + ': no deps', t => {
 			const {babelified, unbabelified} = getCode({ exportType, template: template.templ, deps: [] });
-			const {deps, type} = getDeps(unbabelified);
 
-			t.is(deps.size, 0);
-			t.is(template.type, type);
+			assert(t, unbabelified, [], template.type);
+			assert(t, babelified, [], template.type);
 		});
 
 		test(title + ': one dependency', t => {
 			const {babelified, unbabelified} = getCode({ exportType, template: template.templ, deps: [TEST_DEP] });
-			const {deps, type} = getDeps(unbabelified);
 
-			t.is(deps.size, 1);
-			t.true(deps.has(TEST_DEP));
-			t.is(template.type, type);
+			assert(t, unbabelified, [TEST_DEP], template.type);
+			assert(t, babelified, [TEST_DEP], template.type);
 		});
 
 		test(title + ': many dependencies', t => {
 			const {babelified, unbabelified} = getCode({ exportType, template: template.templ, deps: TEST_DEPS });
-			const {deps, type} = getDeps(unbabelified);
 
-			t.is(deps.size, TEST_DEPS.length);
-			TEST_DEPS.forEach(dep => t.true(deps.has(dep)));
-			t.is(template.type, type);
+			assert(t, unbabelified, TEST_DEPS, template.type);
+			assert(t, babelified, TEST_DEPS, template.type);
 		});
 	});
 });
+
+function assert(t, code, expectedDeps, expectedType) {
+	const {deps, type} = getDeps(code);
+
+	t.is(deps.size, expectedDeps.length);
+	expectedDeps.forEach(dep => t.true(deps.has(dep)));
+	t.is(type, expectedType);
+}
 
 function getCode({exportType, template, deps}) {
 	const unbabelified = `${exportType} ${template.replace(REPLACE_TOKEN, '{' + deps.join(', ') + '}')};`;
